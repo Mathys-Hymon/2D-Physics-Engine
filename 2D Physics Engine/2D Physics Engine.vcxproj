@@ -141,11 +141,13 @@
     <ClCompile Include="lib\SDL2_gfx\SDL2_gfxPrimitives.c" />
     <ClCompile Include="lib\SDL2_gfx\SDL2_imageFilter.c" />
     <ClCompile Include="lib\SDL2_gfx\SDL2_rotozoom.c" />
+    <ClCompile Include="src\Physics\particle.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Physics\Force.cpp" />
     <ClCompile Include="src\Physics\Body.cpp" />
+    <ClCompile Include="src\Physics\Shape.cpp" />
     <ClCompile Include="src\Physics\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,11 +155,13 @@
     <ClInclude Include="lib\SDL2_gfx\SDL2_gfxPrimitives_font.h" />
     <ClInclude Include="lib\SDL2_gfx\SDL2_imageFilter.h" />
     <ClInclude Include="lib\SDL2_gfx\SDL2_rotozoom.h" />
+    <ClInclude Include="src\Physics\particle.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Graphics.h" />
     <ClInclude Include="src\Physics\Constants.h" />
     <ClInclude Include="src\Physics\Force.h" />
     <ClInclude Include="src\Physics\Body.h" />
+    <ClInclude Include="src\Physics\Shape.h" />
     <ClInclude Include="src\Physics\Vec2.h" />
   </ItemGroup>
   <ItemGroup>

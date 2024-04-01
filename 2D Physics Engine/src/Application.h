@@ -9,7 +9,7 @@
 class Application {
     private:
         bool running = false;
-        std::vector<Body*> rb;
+        std::vector<Body*> bodies;
         Vec2 pushForce = Vec2(0,0);
         Vec2 mouseCursor = Vec2(0, 0);
         bool leftMouseButtonDown = false;
