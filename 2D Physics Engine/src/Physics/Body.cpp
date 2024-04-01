@@ -1,7 +1,7 @@
-#include "particle.h"
+#include "Body.h"
 #include <iostream>
 
-Particle::Particle(float x, float y, float mass) {
+Body::Body(float x, float y, float mass) {
 	this->position = Vec2(x, y);
 	this->mass = mass;
 	this->radius = mass;
@@ -10,21 +10,21 @@ Particle::Particle(float x, float y, float mass) {
 	std::cout << "body constructor called" << std::endl;
 }
 
-Particle::~Particle() {
+Body::~Body() {
 	std::cout << "body destructor called" << std::endl;
 }
 
-void Particle::AddForce(const Vec2& force)
+void Body::AddForce(const Vec2& force)
 {
 	sumForces += force;
 }
 
-void Particle::ClearForces()
+void Body::ClearForces()
 {
-	sumForces = Vec2(0.0, 0.0);
+	sumForces = Vec2(0.0,0.0);
 }
 
-void Particle::Integrate(float dt)
+void Body::Integrate(float dt)
 {
 	acceleration = sumForces * invMass;
 	velocity += acceleration * dt;

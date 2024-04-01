@@ -12,13 +12,6 @@ bool Application::IsRunning() {
 void Application::Setup() {
     running = Graphics::OpenWindow();
 
-    Particle* smallPlanet = new Particle(200, 200, 1.0);
-    smallPlanet->radius = 6;
-    particles.push_back(smallPlanet);
-
-    Particle* bigPlanet = new Particle(500, 500, 20.0);
-    bigPlanet->radius = 20;
-    particles.push_back(bigPlanet);
 }
 
 
@@ -69,9 +62,9 @@ void Application::Input() {
             case SDL_MOUSEBUTTONUP:
                 if (leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT) {
                     leftMouseButtonDown = false;
-                    Vec2 impulseDirection = (particles[0]->position - mouseCursor).UnitVector();
-                    float impulseMagnitude = (particles[0]->position - mouseCursor).Magnitude() * 5.0;
-                    particles[0]->velocity = impulseDirection * impulseMagnitude;
+                    Vec2 impulseDirection = (rb[0]->position - mouseCursor).UnitVector();
+                    float impulseMagnitude = (rb[0]->position - mouseCursor).Magnitude() * 5.0;
+                    rb[0]->velocity = impulseDirection * impulseMagnitude;
                 }
                 break;
         }
@@ -91,50 +84,49 @@ void Application::Update() {
     timePreviousFrame = SDL_GetTicks();
 
 
-    for(auto particle: particles) {
-        //Vec2 weight = Vec2(0.0, 9.8 * particle->mass * PIXELS_PER_METER);
-        //particle->AddForce(weight);
-        particle->AddForce(pushForce);
+    for(auto rigidBody : rb) {
+        Vec2 weight = Vec2(0.0, 9.8 * rigidBody->mass * PIXELS_PER_METER);
+        rigidBody->AddForce(weight);
+        rigidBody->AddForce(pushForce);
 
-        Vec2 friction = Force::GenerateFriction(*particle, 5);
-        particle->AddForce(friction);
+        Vec2 drag = Force::GenerateDrag(*rigidBody, 0.002);
+        rigidBody->AddForce(drag);
 
-        if (particle->position.x - particle->radius <= 0) {
-            particle->position.x = particle->radius;
-            particle->velocity.x *= -0.5;
+
+
+
+        if (rigidBody->position.x - rigidBody->radius <= 0) {
+            rigidBody->position.x = rigidBody->radius;
+            rigidBody->velocity.x *= -0.5;
         }
-        else if (particle->position.x + particle->radius >= Graphics::Width()) {
-            particle->position.x = Graphics::Width() - particle->radius;
-            particle->velocity.x *= -0.5;
+        else if (rigidBody->position.x + rigidBody->radius >= Graphics::Width()) {
+            rigidBody->position.x = Graphics::Width() - rigidBody->radius;
+            rigidBody->velocity.x *= -0.5;
         }
 
-        if (particle->position.y - particle->radius <= 0) {
-            particle->position.y = particle->radius;
-            particle->velocity.y *= -0.8;
+        if (rigidBody->position.y - rigidBody->radius <= 0) {
+            rigidBody->position.y = rigidBody->radius;
+            rigidBody->velocity.y *= -0.8;
         }
-        else if (particle->position.y + particle->radius >= Graphics::Height()) {
-            particle->position.y = Graphics::Height() - particle->radius;
-            particle->velocity.y *= -0.8;
+        else if (rigidBody->position.y + rigidBody->radius >= Graphics::Height()) {
+            rigidBody->position.y = Graphics::Height() - rigidBody->radius;
+            rigidBody->velocity.y *= -0.8;
         }
     }
-    Vec2 attraction = Force::GenerateGravity(*particles[0], *particles[1], 1000.0, 5, 100);
-    particles[0]->AddForce(attraction);
-    particles[1]->AddForce(-attraction);
 
 
 
-    for (auto particle : particles) {
-        particle->Integrate(deltaTime);
+    for (auto rigidBody : rb) {
+        rigidBody->Integrate(deltaTime);
     }
 }
-
 
 
 void Application::Render() {
     Graphics::ClearScreen(0xFF056263);
 
-    for (auto particle : particles) {
-        Graphics::DrawFillCircle(particle->position.x, particle->position.y, particle->radius, 0xFFFFFFFF);
+    for (auto rigidBody : rb) {
+        Graphics::DrawFillCircle(rigidBody->position.x, rigidBody->position.y, rigidBody->radius, 0xFFFFFFFF);
     }
     Graphics::RenderFrame();
 }
@@ -143,8 +135,8 @@ void Application::Render() {
 
 void Application::Destroy() {
 
-    for (auto particle : particles) {
-        delete particle;
+    for (auto rigidBody : rb) {
+        delete rigidBody;
     }
 
     Graphics::CloseWindow();
