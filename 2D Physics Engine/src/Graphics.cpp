@@ -3,8 +3,8 @@
 
 SDL_Window* Graphics::window = NULL;
 SDL_Renderer* Graphics::renderer = NULL;
-int Graphics::windowWidth = 800.0;
-int Graphics::windowHeight = 600.0;
+int Graphics::windowWidth = 960.0;
+int Graphics::windowHeight = 540.0;
 
 int Graphics::Width() {
     return windowWidth;
@@ -23,7 +23,7 @@ bool Graphics::OpenWindow() {
     SDL_GetCurrentDisplayMode(0, &display_mode);
     //windowWidth = display_mode.w;
     //windowHeight = display_mode.h;
-    window = SDL_CreateWindow(NULL, display_mode.w / 2 - windowWidth / 2, display_mode.h / 2 - windowHeight / 2, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow(NULL, display_mode.w / 1.4 - windowWidth / 2, display_mode.h / 2 - windowHeight / 2, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE);
     if (!window) {
         std::cerr << "Error creating SDL window" << std::endl;
         return false;
